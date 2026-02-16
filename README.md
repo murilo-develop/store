@@ -97,7 +97,7 @@ Feeling fancy? We've got Docker support:
 
 ```bash
 docker build -t awesome-store .
-docker run -p 3000:3000 awesome-store
+docker run -p 3000:3000 -e RAILS_MASTER_KEY=$(cat config/master.key) awesome-store
 ```
 
 ## 🚢 Deployment
