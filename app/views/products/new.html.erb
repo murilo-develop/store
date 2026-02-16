@@ -1,0 +1,11 @@
+<div class="max-w-2xl">
+  <div class="bg-white shadow-sm rounded-lg px-8 py-6">
+    <h1 class="text-3xl font-bold text-gray-900 mb-8">New Product</h1>
+
+    <%= render 'form', product: @product %>
+
+    <div class="mt-6">
+      <%= link_to "Cancel", products_path, class: "inline-flex items-center px-4 py-2 border border-gray-300 rounded-md font-semibold text-sm text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors duration-200" %>
+    </div>
+  </div>
+</div>
