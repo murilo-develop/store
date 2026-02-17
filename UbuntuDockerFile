@@ -1,0 +1,79 @@
+# Use the official Ubuntu image as a base
+FROM ubuntu:24.04
+
+# Set locale
+RUN apt-get update && apt-get install -y locales && rm -rf /var/lib/apt/lists/* \
+	&& localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8
+ENV LANG=en_US.utf8
+
+# Install dependencies including OpenSSH server and Docker
+RUN apt-get update -qq && apt-get install -y \
+    build-essential \
+    ca-certificates \
+    curl \
+    git \
+    gnupg \
+    libsqlite3-dev \
+    libvips \
+    lsb-release \
+    nodejs \
+    npm \
+    openssh-server \
+    sudo \
+    tzdata \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Docker CLI only (will use host Docker socket)
+RUN install -m 0755 -d /etc/apt/keyrings && \
+    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg && \
+    chmod a+r /etc/apt/keyrings/docker.gpg && \
+    echo \
+      "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+      $(. /etc/os-release && echo $VERSION_CODENAME) stable" | \
+      tee /etc/apt/sources.list.d/docker.list > /dev/null && \
+    apt-get update && \
+    apt-get install -y docker-ce-cli docker-buildx-plugin docker-compose-plugin && \
+    rm -rf /var/lib/apt/lists/*
+
+# Create docker group for socket access (CLI doesn't create it)
+RUN groupadd -f docker
+
+# Create apprunner user with password and sudo access
+# Add to docker group for socket access
+RUN useradd -ms /bin/bash apprunner && \
+    echo "apprunner:password" | chpasswd && \
+    usermod -aG sudo apprunner && \
+    usermod -aG docker apprunner
+
+# Note: Docker daemon runs on host, no daemon.json needed in container
+# The host's Docker Desktop already has insecure-registries configured
+
+# Configure SSH
+RUN mkdir -p /run/sshd && \
+    sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config && \
+    sed -i 's/#PasswordAuthentication yes/PasswordAuthentication yes/' /etc/ssh/sshd_config && \
+    echo "apprunner ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+
+# Setup SSH key directory for apprunner
+RUN mkdir -p /home/apprunner/.ssh && \
+    chmod 700 /home/apprunner/.ssh && \
+    chown -R apprunner:apprunner /home/apprunner/.ssh
+
+# Expose ports
+EXPOSE 22 80
+
+# Start services script - SSH only (Docker uses host socket)
+COPY <<EOF /start-services.sh
+#!/bin/bash
+sudo service ssh start
+tail -f /dev/null
+EOF
+
+RUN chmod +x /start-services.sh
+
+USER apprunner
+
+CMD ["/start-services.sh"]
+
+
+

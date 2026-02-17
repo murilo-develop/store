@@ -1,7 +1,7 @@
 <div class="space-y-8">
   <div class="flex justify-between items-center">
-    <h1 class="text-3xl font-bold text-gray-900">Products</h1>
-    <%= link_to 'New Product', new_product_path, class: "inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-sm text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors duration-200" %>
+    <h1 class="text-3xl font-bold text-gray-900"><%= t("products.title") %></h1>
+    <%= link_to 'New Product', new_product_path, class: "inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-sm text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors duration-200" if authenticated? %>
   </div>
 
   <div id="products" class="bg-white shadow-sm rounded-lg divide-y divide-gray-200">

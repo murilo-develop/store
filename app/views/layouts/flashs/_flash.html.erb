@@ -1,0 +1,20 @@
+<% if flash.any? %>
+  <div class="w-full bg-white border-b border-gray-200 shadow-sm"
+      role="alert"
+      data-controller="alert-dismiss"
+      data-alert-dismiss-delay-value="4500">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
+      <% flash.each do |type, message| %>
+        <% if type.to_s == "notice" %>
+          <%= render "layouts/flashs/notice", message: message %>
+        <% elsif type.to_s == "success" %>
+          <%= render "layouts/flashs/success", message: message %>
+        <% elsif type.to_s == "alert" || type.to_s == "error" %>
+          <%= render "layouts/flashs/alert", message: message %>
+        <% else %>
+          <%= render "layouts/flashs/undefined", message: message %>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+<% end %>

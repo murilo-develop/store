@@ -1,0 +1,6 @@
+Host localhost
+  Port 2000
+  User apprunner
+  IdentityFile ~/.ssh/id_kamal_local
+  StrictHostKeyChecking no
+  UserKnownHostsFile /dev/null

@@ -1,1 +1,35 @@
 @import "tailwindcss";
+
+@layer utilities {
+  .bg-blue-50 {
+    background-color: oklch(97% 0.01 240);
+  }
+  
+  .bg-blue-200 {
+    background-color: oklch(87% 0.04 240);
+  }
+  
+  .text-blue-800 {
+    color: oklch(45% 0.12 260);
+  }
+  
+  .border-blue-200 {
+    border-color: oklch(87% 0.04 240);
+  }
+  
+  .bg-green-50 {
+    background-color: oklch(97% 0.02 145);
+  }
+  
+  .bg-green-200 {
+    background-color: oklch(85% 0.08 145);
+  }
+  
+  .text-green-800 {
+    color: oklch(40% 0.13 145);
+  }
+  
+  .border-green-200 {
+    border-color: oklch(85% 0.08 145);
+  }
+}

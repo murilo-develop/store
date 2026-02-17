@@ -29,14 +29,18 @@
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center h-16">
           <div class="flex items-center">
-            <%= link_to "Store", products_path, class: "text-2xl font-bold text-gray-900 hover:text-gray-700" %>
+            <%= link_to t("title"), products_path, class: "text-2xl font-bold text-gray-900 hover:text-gray-700" %>
           </div>
           <div class="flex items-center space-x-8">
-            <%= link_to "Products", products_path, class: "text-gray-700 hover:text-gray-900 font-medium" %>
+            <%= button_to "Login", new_session_path, method: :get, class: "text-gray-700 hover:text-gray-900 font-medium" unless authenticated? %>
+            <%= button_to "Log out", session_path, method: :delete, class: "text-gray-700 hover:text-gray-900 font-medium" if authenticated? %>
           </div>
         </div>
       </div>
     </nav>
+
+    <!-- Flash Messages -->
+    <%= render "layouts/flashs/flash" %>
 
     <!-- Main Content -->
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">

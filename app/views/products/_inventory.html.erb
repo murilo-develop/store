@@ -1,0 +1,18 @@
+<% if product.inventory_count? %>
+  <div class="text-sm text-gray-500 mb-2">
+    <%= product.inventory_count %> in stock
+  </div>
+<% else %>
+    <div class="mb-2">
+        <p class="font-medium text-sm text-red-500">Out of stock</p>
+        <p class="text-xs text-gray-500">Subscribe to be notified when it's back in stock:</p>
+    </div>
+    <%= form_with model: [ product, Subscriber.new ] do |form| %>
+      <div class="mt-2">
+        <%= form.email_field :email, placeholder: "Enter your email", required: true, class: "border border-gray-300 rounded-md p-2 w-full" %>
+      </div>
+      <div class="mt-2 mb-8">
+        <%= form.submit "Subscribe", class: "inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-sm text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors duration-200" %>
+      </div>
+    <% end %>
+<% end %>
