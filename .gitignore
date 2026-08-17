@@ -40,3 +40,6 @@
 # Ignore Kamal generated files
 /.kamal/apps/*
 /.kamal/proxy/*
+
+# idea
+.idea/*
